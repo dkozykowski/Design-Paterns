@@ -5,11 +5,11 @@ using Task3.Enumerators;
 
 namespace Task3.FactoryMethods
 {
-    public static class GenomeIteratorFactoryMethod
+    public static class GenomeEnumeratorFactoryMethod
     {
         public static GenomeDatabaseEnumerator GetEnumerator(SimpleGenomeDatabase db)
         {
-            return new SimpleGenomeDatabaseEnumerator();
+            return new SimpleGenomeDatabaseEnumerator(db);
         }
     }
 }

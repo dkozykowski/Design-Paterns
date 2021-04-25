@@ -14,7 +14,16 @@ namespace Task3.Enumerators
         }
         public override IEnumerable GetCollection(GenomeDatabaseEnumerator enumerator)
         {
-            throw new NotImplementedException();
+            foreach(SimpleDatabaseRow sdr in db.Rows)
+            {
+                List<GenomeData> genomeDatas = new List<GenomeData>();
+                foreach (GenomeData genome in enumerator.GetCollection())
+                {
+                    if (sdr.GenomeId == genome.Id)
+                        genomeDatas.Add(genome);
+                }
+                yield return new VirusData(sdr.VirusName, sdr.DeathRate, sdr.InfectionRate, genomeDatas);
+            }
         }
     }
 }
