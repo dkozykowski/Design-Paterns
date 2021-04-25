@@ -2,6 +2,8 @@
 using System.Collections.Generic;
 using Task3.Subjects;
 using Task3.Vaccines;
+using Task3.Enumerators;
+using Task3.FactoryMethods;
 
 namespace Task3
 {
@@ -9,9 +11,10 @@ namespace Task3
     {
         public class MediaOutlet
         {
-            public void Publish()
+            public void Publish(DatabaseEnumerator enumerator)
             {
-                // Console.WriteLine(...)
+                foreach (VirusData virus in enumerator.GetCollection())
+                    Console.WriteLine(virus);
             }
         }
 
@@ -70,6 +73,9 @@ namespace Task3
             var mediaOutlet = new MediaOutlet();
 
 
+            DatabaseEnumerator genomeEnumerator = GenomeEnumeratorFactoryMethod.GetEnumerator(genomeDatabase);
+            DatabaseEnumerator virusEnumerator = VirusEnumeratorFactoryMethod.GetEnumerator(simpleDatabase, genomeEnumerator);
+            mediaOutlet.Publish(virusEnumerator);
 
 
             // testing animals

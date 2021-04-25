@@ -5,19 +5,21 @@ using System.Text;
 
 namespace Task3.Enumerators
 {
-    public class SimpleDatabaseEnumerator : VirusDatabaseEnumerator
+    public class SimpleDatabaseEnumerator : DatabaseEnumerator
     {
-        private SimpleDatabase db;
-        public SimpleDatabaseEnumerator(SimpleDatabase db)
+        private readonly SimpleDatabase database;
+        private readonly DatabaseEnumerator genomeDatabaseEnumerator;
+        public SimpleDatabaseEnumerator(SimpleDatabase database, DatabaseEnumerator enumerator)
         {
-            this.db = db;
+            this.genomeDatabaseEnumerator = enumerator;
+            this.database = database;
         }
-        public override IEnumerable GetCollection(GenomeDatabaseEnumerator enumerator)
+        public override IEnumerable GetCollection()
         {
-            foreach(SimpleDatabaseRow sdr in db.Rows)
+            foreach(SimpleDatabaseRow sdr in database.Rows)
             {
                 List<GenomeData> genomeDatas = new List<GenomeData>();
-                foreach (GenomeData genome in enumerator.GetCollection())
+                foreach (GenomeData genome in genomeDatabaseEnumerator.GetCollection())
                 {
                     if (sdr.GenomeId == genome.Id)
                         genomeDatas.Add(genome);

@@ -5,17 +5,19 @@ using System.Text;
 
 namespace Task3.Enumerators
 {
-    public class OvercomplicatedDatabaseEnumerator : VirusDatabaseEnumerator
+    public class OvercomplicatedDatabaseEnumerator : DatabaseEnumerator
     {
-        private OvercomplicatedDatabase db;
-        public OvercomplicatedDatabaseEnumerator(OvercomplicatedDatabase db)
+        private readonly OvercomplicatedDatabase database;
+        private readonly DatabaseEnumerator genomeDatabaseEnumerator;
+        public OvercomplicatedDatabaseEnumerator(OvercomplicatedDatabase database, DatabaseEnumerator enumerator)
         {
-            this.db = db;
+            this.genomeDatabaseEnumerator = enumerator;
+            this.database = database;
         }
-        public override IEnumerable GetCollection(GenomeDatabaseEnumerator enumerator)
+        public override IEnumerable GetCollection()
         {
             Queue<INode> queue = new Queue<INode>();
-            queue.Enqueue(db.Root);
+            queue.Enqueue(database.Root);
 
             while(queue.Count > 0)
             {
@@ -24,7 +26,7 @@ namespace Task3.Enumerators
                     queue.Enqueue(child);
 
                 List<GenomeData> genomeDatas = new List<GenomeData>();
-                foreach(GenomeData genome in enumerator.GetCollection())
+                foreach(GenomeData genome in genomeDatabaseEnumerator.GetCollection())
                 {
                     foreach(string tag in genome.Tags)
                     {

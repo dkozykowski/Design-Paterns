@@ -7,17 +7,17 @@ namespace Task3.FactoryMethods
 {
     public static class VirusEnumeratorFactoryMethod
     {
-        public static VirusDatabaseEnumerator GetEnumerator(ExcellDatabase db)
+        public static DatabaseEnumerator GetEnumerator(ExcellDatabase database, DatabaseEnumerator enumerator)
         {
-            return new ExcellDatabaseEnumerator(db);
+            return new ExcellDatabaseEnumerator(database, enumerator);
         }
-        public static VirusDatabaseEnumerator GetEnumerator(SimpleDatabase db)
+        public static DatabaseEnumerator GetEnumerator(SimpleDatabase database, DatabaseEnumerator enumerator)
         {
-            return new SimpleDatabaseEnumerator(db);
+            return new SimpleDatabaseEnumerator(database, enumerator);
         }
-        public static VirusDatabaseEnumerator GetEnumerator(OvercomplicatedDatabase db)
+        public static DatabaseEnumerator GetEnumerator(OvercomplicatedDatabase database, DatabaseEnumerator enumerator)
         {
-            return new OvercomplicatedDatabaseEnumerator(db);
+            return new OvercomplicatedDatabaseEnumerator(database, enumerator);
         }
     }
 }

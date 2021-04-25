@@ -7,9 +7,9 @@ namespace Task3.FactoryMethods
 {
     public static class GenomeEnumeratorFactoryMethod
     {
-        public static GenomeDatabaseEnumerator GetEnumerator(SimpleGenomeDatabase db)
+        public static DatabaseEnumerator GetEnumerator(SimpleGenomeDatabase database)
         {
-            return new SimpleGenomeDatabaseEnumerator(db);
+            return new SimpleGenomeDatabaseEnumerator(database);
         }
     }
 }

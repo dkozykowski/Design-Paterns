@@ -5,16 +5,16 @@ using System.Text;
 
 namespace Task3.Enumerators
 {
-    public class SimpleGenomeDatabaseEnumerator : GenomeDatabaseEnumerator
+    public class SimpleGenomeDatabaseEnumerator : DatabaseEnumerator
     {
-        private SimpleGenomeDatabase db;
-        public SimpleGenomeDatabaseEnumerator(SimpleGenomeDatabase db)
+        private SimpleGenomeDatabase database;
+        public SimpleGenomeDatabaseEnumerator(SimpleGenomeDatabase database)
         {
-            this.db = db;
+            this.database = database;
         }
         public override IEnumerable GetCollection()
         {
-            foreach(GenomeData genome in db.genomeDatas)
+            foreach(GenomeData genome in database.genomeDatas)
             {
                 yield return genome;
             }

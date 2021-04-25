@@ -5,8 +5,8 @@ using System.Text;
 
 namespace Task3.Enumerators
 {
-    public abstract class VirusDatabaseEnumerator
+    public abstract class DatabaseEnumerator
     {
-        public abstract IEnumerable GetCollection(GenomeDatabaseEnumerator enumerator);
+        public abstract IEnumerable GetCollection();
     }
 }

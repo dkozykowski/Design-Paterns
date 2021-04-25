@@ -5,19 +5,21 @@ using System.Text;
 
 namespace Task3.Enumerators
 {
-    public class ExcellDatabaseEnumerator : VirusDatabaseEnumerator
+    public class ExcellDatabaseEnumerator : DatabaseEnumerator
     {
-        private ExcellDatabase db;
-        public ExcellDatabaseEnumerator(ExcellDatabase db)
+        private readonly ExcellDatabase database;
+        private readonly DatabaseEnumerator genomeDatabaseEnumerator;
+        public ExcellDatabaseEnumerator(ExcellDatabase database, DatabaseEnumerator enumerator)
         {
-            this.db = db;
+            this.genomeDatabaseEnumerator = enumerator;
+            this.database = database;
         }
-        public override IEnumerable GetCollection(GenomeDatabaseEnumerator enumerator)
+        public override IEnumerable GetCollection()
         {
-            string[] names = db.Names.Split(';');
-            double[] deathRates = db.DeathRates.Split(';').toDouble();
-            double[] infectionRates = db.InfectionRates.Split(';').toDouble();
-            Guid[] genomeIds = db.GenomeIds.Split(';').toGuid();
+            string[] names = database.Names.Split(';');
+            double[] deathRates = database.DeathRates.Split(';').toDouble();
+            double[] infectionRates = database.InfectionRates.Split(';').toDouble();
+            Guid[] genomeIds = database.GenomeIds.Split(';').toGuid();
 
             if (names.Length != deathRates.Length || names.Length != infectionRates.Length ||
                 names.Length != genomeIds.Length) throw new ArgumentException();
@@ -25,7 +27,7 @@ namespace Task3.Enumerators
             for (int i = 0; i < names.Length; i++)
             {
                 List<GenomeData> genomeDatas = new List<GenomeData>();
-                foreach(GenomeData genome in enumerator.GetCollection())
+                foreach(GenomeData genome in genomeDatabaseEnumerator.GetCollection())
                 {
                     if (genomeIds[i] == genome.Id)
                         genomeDatas.Add(genome);

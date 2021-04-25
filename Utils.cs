@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Globalization;
 using System.Text;
 
 namespace Task3
@@ -20,7 +21,7 @@ namespace Task3
             double[] outputData = new double[inputData.Length];
             for (int i = 0; i < inputData.Length; i++)
             {
-                outputData[i] = double.Parse(inputData[i]);
+                outputData[i] = double.Parse(inputData[i], CultureInfo.InvariantCulture);
             }
             return outputData;
         }
