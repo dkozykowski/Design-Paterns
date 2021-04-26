@@ -4,6 +4,7 @@ using Task3.Subjects;
 using Task3.Vaccines;
 using Task3.Enumerators;
 using Task3.FactoryMethods;
+using Task3.Enumerators.DecoratingEnumerators;
 
 namespace Task3
 {
@@ -72,10 +73,47 @@ namespace Task3
             var overcomplicatedDatabase = Generators.PrepareOvercomplicatedDatabase(genomeDatabase);
             var mediaOutlet = new MediaOutlet();
 
-
             DatabaseEnumerator genomeEnumerator = GenomeEnumeratorFactoryMethod.GetEnumerator(genomeDatabase);
-            DatabaseEnumerator virusEnumerator = VirusEnumeratorFactoryMethod.GetEnumerator(simpleDatabase, genomeEnumerator);
-            mediaOutlet.Publish(virusEnumerator);
+            DatabaseEnumerator enumerator = new ConcatenatingEnumerator(
+                VirusEnumeratorFactoryMethod.GetEnumerator(simpleDatabase, genomeEnumerator),
+                VirusEnumeratorFactoryMethod.GetEnumerator(excellDatabase, genomeEnumerator),
+                VirusEnumeratorFactoryMethod.GetEnumerator(overcomplicatedDatabase, genomeEnumerator)
+            );
+            mediaOutlet.Publish(enumerator);
+
+            Console.WriteLine("\n----------------------------------------------------\n");
+            enumerator = new FilteringEnumerator(
+                VirusEnumeratorFactoryMethod.GetEnumerator(excellDatabase, genomeEnumerator), 
+                delegate (VirusData virus)
+                {
+                    return virus.DeathRate > 15;
+                }
+            );
+            mediaOutlet.Publish(enumerator);
+
+            Console.WriteLine("\n----------------------------------------------------\n");
+            enumerator = new MappingEnumerator(
+                VirusEnumeratorFactoryMethod.GetEnumerator(excellDatabase, genomeEnumerator),
+                delegate (VirusData virus)
+                {
+                    return new VirusData(virus.VirusName, virus.DeathRate + 10, virus.InfectionRate, virus.Genomes);
+                }
+            );
+            enumerator = new FilteringEnumerator(
+                enumerator,
+                delegate (VirusData virus)
+                {
+                    return virus.DeathRate > 15;
+                }
+            );
+            mediaOutlet.Publish(enumerator);
+
+            Console.WriteLine("\n----------------------------------------------------\n");
+            enumerator = new ConcatenatingEnumerator(
+                VirusEnumeratorFactoryMethod.GetEnumerator(excellDatabase, genomeEnumerator),
+                VirusEnumeratorFactoryMethod.GetEnumerator(overcomplicatedDatabase, genomeEnumerator)
+            );
+            mediaOutlet.Publish(enumerator);
 
 
             // testing animals
