@@ -15,5 +15,53 @@ namespace Task3.Vaccines
         {
             return "Vaccinator3000";
         }
+
+        public void Vaccinate(Dog dog)
+        {
+            if (randomElement.NextDouble() <= DeathRate)
+            {
+                Console.WriteLine($"Vaccine {this} kills Dog with ID = [{dog.ID}]");
+                dog.Alive = false;
+            }
+            else
+            {
+                char[] tempArray = new char[3000];
+                for (int i = 0; i < 3000; i++)
+                    tempArray[i] = Immunity[randomElement.Next(0, 4)];
+                dog.Immunity = new string(tempArray);
+            }
+        }
+
+        public void Vaccinate(Cat cat)
+        {
+            if (randomElement.NextDouble() <= DeathRate)
+            {
+                Console.WriteLine($"Vaccine {this} kills Cat with ID = [{cat.ID}]");
+                cat.Alive = false;
+            }
+            else
+            {
+                char[] tempArray = new char[300];
+                for (int i = 0; i < 300; i++)
+                    tempArray[i] = Immunity[randomElement.Next(0, 4)];
+                cat.Immunity = new string(tempArray);
+            }
+        }
+
+        public void Vaccinate(Pig pig)
+        {
+            if (randomElement.NextDouble() <= 3 * DeathRate)
+            {
+                Console.WriteLine($"Vaccine {this} kills Pig with ID = [{pig.ID}]");
+                pig.Alive = false;
+            }
+            else
+            {
+                char[] tempArray = new char[15];
+                for (int i = 0; i < 15; i++)
+                    tempArray[i] = Immunity[randomElement.Next(0, 4)];
+                pig.Immunity = new string(tempArray);
+            }
+        }
     }
 }

@@ -39,22 +39,21 @@ namespace Task3
 
                     foreach (var subject in subjects)
                     {
-                        // process of vaccination
+                        subject.GetVaccinated(vaccine);
                     }
 
                     var genomeDatabase = Generators.PrepareGenomes();
                     var simpleDatabase = Generators.PrepareSimpleDatabase(genomeDatabase);
-                    // iteration over SimpleGenomeDatabase using solution from 1)
-                    // subjects should be tested here using GetTested function
+                    DatabaseEnumerator genomeEnumerator = GenomeEnumeratorFactoryMethod.GetEnumerator(genomeDatabase);
+                    DatabaseEnumerator enumerator = VirusEnumeratorFactoryMethod.GetEnumerator(simpleDatabase, genomeEnumerator);
 
-
-                    // iterating over simpleDatabase
-                    //{
-                        //foreach (var subject in subjects)
-                        //{
-                        //    subject.GetTested();
-                        //}
-                    //}
+                    foreach(VirusData virus in enumerator.GetCollection())
+                    {
+                        foreach (var subject in subjects)
+                        {
+                            subject.GetTested(virus);
+                        }
+                    }
 
                     int aliveCount = 0;
                     foreach (var subject in subjects)
@@ -74,15 +73,17 @@ namespace Task3
             var mediaOutlet = new MediaOutlet();
 
             DatabaseEnumerator genomeEnumerator = GenomeEnumeratorFactoryMethod.GetEnumerator(genomeDatabase);
-            DatabaseEnumerator enumerator = new ConcatenatingEnumerator(
-                VirusEnumeratorFactoryMethod.GetEnumerator(simpleDatabase, genomeEnumerator),
-                VirusEnumeratorFactoryMethod.GetEnumerator(excellDatabase, genomeEnumerator),
-                VirusEnumeratorFactoryMethod.GetEnumerator(overcomplicatedDatabase, genomeEnumerator)
-            );
-            mediaOutlet.Publish(enumerator);
+            
+            //// Uncomment to print All Data
+            //DatabaseEnumerator enumerator = new ConcatenatingEnumerator(
+            //    VirusEnumeratorFactoryMethod.GetEnumerator(simpleDatabase, genomeEnumerator),
+            //    VirusEnumeratorFactoryMethod.GetEnumerator(excellDatabase, genomeEnumerator),
+            //    VirusEnumeratorFactoryMethod.GetEnumerator(overcomplicatedDatabase, genomeEnumerator)
+            //);
+            //mediaOutlet.Publish(enumerator);
 
             Console.WriteLine("\n----------------------------------------------------\n");
-            enumerator = new FilteringEnumerator(
+            DatabaseEnumerator enumerator = new FilteringEnumerator(
                 VirusEnumeratorFactoryMethod.GetEnumerator(excellDatabase, genomeEnumerator), 
                 delegate (VirusData virus)
                 {
@@ -117,6 +118,7 @@ namespace Task3
 
 
             // testing animals
+            Console.WriteLine("\n----------------------------------------------------\n");
             var tester = new Tester();
             tester.Test();
         }

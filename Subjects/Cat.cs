@@ -29,5 +29,10 @@ namespace Task3.Subjects
                 }
             }
         }
+
+        public void GetVaccinated(IVaccine vaccine)
+        {
+            vaccine.Vaccinate(this);
+        }
     }
 }

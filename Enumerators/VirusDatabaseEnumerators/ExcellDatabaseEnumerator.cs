@@ -17,9 +17,9 @@ namespace Task3.Enumerators
         public override IEnumerable GetCollection()
         {
             string[] names = database.Names.Split(';');
-            double[] deathRates = database.DeathRates.Split(';').toDouble();
-            double[] infectionRates = database.InfectionRates.Split(';').toDouble();
-            Guid[] genomeIds = database.GenomeIds.Split(';').toGuid();
+            double[] deathRates = database.DeathRates.Split(';').ToDouble();
+            double[] infectionRates = database.InfectionRates.Split(';').ToDouble();
+            Guid[] genomeIds = database.GenomeIds.Split(';').ToGuid();
 
             if (names.Length != deathRates.Length || names.Length != infectionRates.Length ||
                 names.Length != genomeIds.Length) throw new ArgumentException();
