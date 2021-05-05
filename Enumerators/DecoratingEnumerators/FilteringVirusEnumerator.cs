@@ -2,20 +2,21 @@
 using System.Collections;
 using System.Collections.Generic;
 using System.Text;
+using Task3.Enumerators.VirusDatabaseEnumerators;
 
 namespace Task3.Enumerators.DecoratingEnumerators
 {
-    class FilteringEnumerator : DatabaseEnumerator
+    class FilteringVirusEnumerator : DecoratingVirusEnumerator
     {
         private readonly Func<VirusData, bool> filterFunction;
-        private readonly DatabaseEnumerator baseEnumerator;
+        private readonly IVirusEnumerator baseEnumerator;
 
-        public FilteringEnumerator(DatabaseEnumerator enumerator, Func<VirusData, bool> function)
+        public FilteringVirusEnumerator(IVirusEnumerator enumerator, Func<VirusData, bool> function)
         {
-            this.filterFunction = function;
-            this.baseEnumerator = enumerator;
+            filterFunction = function;
+            baseEnumerator = enumerator;
         }
-        public override IEnumerable GetCollection()
+        override public IEnumerable GetCollection()
         {
             foreach (VirusData virus in baseEnumerator.GetCollection())
             {

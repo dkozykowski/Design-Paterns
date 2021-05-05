@@ -27,7 +27,7 @@ namespace Task3.Vaccines
             {
                 char[] tempArray = new char[3000];
                 for (int i = 0; i < 3000; i++)
-                    tempArray[i] = Immunity[randomElement.Next(0, 4)];
+                    tempArray[i] = Immunity[randomElement.Next(0, Immunity.Length)];
                 dog.Immunity = new string(tempArray);
             }
         }
@@ -43,7 +43,7 @@ namespace Task3.Vaccines
             {
                 char[] tempArray = new char[300];
                 for (int i = 0; i < 300; i++)
-                    tempArray[i] = Immunity[randomElement.Next(0, 4)];
+                    tempArray[i] = Immunity[randomElement.Next(0, Immunity.Length)];
                 cat.Immunity = new string(tempArray);
             }
         }
@@ -59,7 +59,7 @@ namespace Task3.Vaccines
             {
                 char[] tempArray = new char[15];
                 for (int i = 0; i < 15; i++)
-                    tempArray[i] = Immunity[randomElement.Next(0, 4)];
+                    tempArray[i] = Immunity[randomElement.Next(0, Immunity.Length)];
                 pig.Immunity = new string(tempArray);
             }
         }

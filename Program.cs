@@ -2,9 +2,11 @@
 using System.Collections.Generic;
 using Task3.Subjects;
 using Task3.Vaccines;
-using Task3.Enumerators;
 using Task3.FactoryMethods;
 using Task3.Enumerators.DecoratingEnumerators;
+using Task3.Enumerators.GenomeDatabaseEnumerators;
+using Task3.Enumerators.VirusDatabaseEnumerators;
+using Task3.Enumerators;
 
 namespace Task3
 {
@@ -12,7 +14,7 @@ namespace Task3
     {
         public class MediaOutlet
         {
-            public void Publish(DatabaseEnumerator enumerator)
+            public void Publish(IVirusEnumerator enumerator)
             {
                 foreach (VirusData virus in enumerator.GetCollection())
                     Console.WriteLine(virus);
@@ -27,7 +29,7 @@ namespace Task3
 
                 foreach (var vaccine in vaccines)
                 {
-                    Console.WriteLine($"Testing {vaccine}");
+                    Console.WriteLine($"\nTesting {vaccine}");
                     var subjects = new List<ISubject>();
                     int n = 5;
                     for (int i = 0; i < n; i++)
@@ -44,8 +46,8 @@ namespace Task3
 
                     var genomeDatabase = Generators.PrepareGenomes();
                     var simpleDatabase = Generators.PrepareSimpleDatabase(genomeDatabase);
-                    DatabaseEnumerator genomeEnumerator = GenomeEnumeratorFactoryMethod.GetEnumerator(genomeDatabase);
-                    DatabaseEnumerator enumerator = VirusEnumeratorFactoryMethod.GetEnumerator(simpleDatabase, genomeEnumerator);
+                    GenomeDatabaseEnumerator genomeEnumerator = GenomeEnumeratorFactoryMethod.GetEnumerator(genomeDatabase);
+                    VirusDatabaseEnumerator enumerator = VirusEnumeratorFactoryMethod.GetEnumerator(simpleDatabase, genomeEnumerator);
 
                     foreach(VirusData virus in enumerator.GetCollection())
                     {
@@ -72,18 +74,23 @@ namespace Task3
             var overcomplicatedDatabase = Generators.PrepareOvercomplicatedDatabase(genomeDatabase);
             var mediaOutlet = new MediaOutlet();
 
-            DatabaseEnumerator genomeEnumerator = GenomeEnumeratorFactoryMethod.GetEnumerator(genomeDatabase);
-            
-            //// Uncomment to print All Data
-            //DatabaseEnumerator enumerator = new ConcatenatingEnumerator(
-            //    VirusEnumeratorFactoryMethod.GetEnumerator(simpleDatabase, genomeEnumerator),
-            //    VirusEnumeratorFactoryMethod.GetEnumerator(excellDatabase, genomeEnumerator),
-            //    VirusEnumeratorFactoryMethod.GetEnumerator(overcomplicatedDatabase, genomeEnumerator)
-            //);
-            //mediaOutlet.Publish(enumerator);
+            GenomeDatabaseEnumerator genomeEnumerator = GenomeEnumeratorFactoryMethod.GetEnumerator(genomeDatabase);
 
-            Console.WriteLine("\n----------------------------------------------------\n");
-            DatabaseEnumerator enumerator = new FilteringEnumerator(
+            Console.WriteLine("Simple Database-------------------------------------");
+            IVirusEnumerator enumerator = VirusEnumeratorFactoryMethod.GetEnumerator(simpleDatabase, genomeEnumerator);
+            mediaOutlet.Publish(enumerator);
+
+            Console.WriteLine("\n\nExcell Database-------------------------------------");
+            enumerator = VirusEnumeratorFactoryMethod.GetEnumerator(excellDatabase, genomeEnumerator);
+            mediaOutlet.Publish(enumerator);
+
+            Console.WriteLine("\n\nOvercomplicated Database----------------------------");
+            enumerator = VirusEnumeratorFactoryMethod.GetEnumerator(overcomplicatedDatabase, genomeEnumerator);
+            mediaOutlet.Publish(enumerator);
+
+
+            Console.WriteLine("\n\nFilter 1--------------------------------------------");
+            enumerator = new FilteringVirusEnumerator(
                 VirusEnumeratorFactoryMethod.GetEnumerator(excellDatabase, genomeEnumerator), 
                 delegate (VirusData virus)
                 {
@@ -92,15 +99,15 @@ namespace Task3
             );
             mediaOutlet.Publish(enumerator);
 
-            Console.WriteLine("\n----------------------------------------------------\n");
-            enumerator = new MappingEnumerator(
+            Console.WriteLine("\n\nFilter 2---------------------------------------------");
+            enumerator = new MappingVirusEnumerator(
                 VirusEnumeratorFactoryMethod.GetEnumerator(excellDatabase, genomeEnumerator),
                 delegate (VirusData virus)
                 {
                     return new VirusData(virus.VirusName, virus.DeathRate + 10, virus.InfectionRate, virus.Genomes);
                 }
             );
-            enumerator = new FilteringEnumerator(
+            enumerator = new FilteringVirusEnumerator(
                 enumerator,
                 delegate (VirusData virus)
                 {
@@ -109,8 +116,8 @@ namespace Task3
             );
             mediaOutlet.Publish(enumerator);
 
-            Console.WriteLine("\n----------------------------------------------------\n");
-            enumerator = new ConcatenatingEnumerator(
+            Console.WriteLine("\n\nFileter 3------------------------------------------");
+            enumerator = new ConcatenatingVirusEnumerator(
                 VirusEnumeratorFactoryMethod.GetEnumerator(excellDatabase, genomeEnumerator),
                 VirusEnumeratorFactoryMethod.GetEnumerator(overcomplicatedDatabase, genomeEnumerator)
             );
@@ -118,7 +125,7 @@ namespace Task3
 
 
             // testing animals
-            Console.WriteLine("\n----------------------------------------------------\n");
+            Console.WriteLine("\n\nVaccinating----------------------------------------");
             var tester = new Tester();
             tester.Test();
         }

@@ -3,11 +3,11 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Text;
 
-namespace Task3.Enumerators
+namespace Task3.Enumerators.GenomeDatabaseEnumerators
 {
-    public class SimpleGenomeDatabaseEnumerator : DatabaseEnumerator
+    public class SimpleGenomeDatabaseEnumerator : GenomeDatabaseEnumerator
     {
-        private SimpleGenomeDatabase database;
+        private readonly SimpleGenomeDatabase database;
         public SimpleGenomeDatabaseEnumerator(SimpleGenomeDatabase database)
         {
             this.database = database;

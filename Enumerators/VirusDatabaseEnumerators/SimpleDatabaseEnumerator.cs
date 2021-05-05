@@ -2,16 +2,16 @@
 using System.Collections;
 using System.Collections.Generic;
 using System.Text;
+using Task3.Enumerators.GenomeDatabaseEnumerators;
 
-namespace Task3.Enumerators
+namespace Task3.Enumerators.VirusDatabaseEnumerators
 {
-    public class SimpleDatabaseEnumerator : DatabaseEnumerator
+    public class SimpleDatabaseEnumerator : VirusDatabaseEnumerator
     {
         private readonly SimpleDatabase database;
-        private readonly DatabaseEnumerator genomeDatabaseEnumerator;
-        public SimpleDatabaseEnumerator(SimpleDatabase database, DatabaseEnumerator enumerator)
+        public SimpleDatabaseEnumerator(SimpleDatabase database, GenomeDatabaseEnumerator enumerator)
         {
-            this.genomeDatabaseEnumerator = enumerator;
+            genomeDatabaseEnumerator = enumerator;
             this.database = database;
         }
         public override IEnumerable GetCollection()

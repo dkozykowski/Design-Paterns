@@ -2,17 +2,18 @@
 using System.Collections;
 using System.Collections.Generic;
 using System.Text;
+using Task3.Enumerators.VirusDatabaseEnumerators;
 
 namespace Task3.Enumerators.DecoratingEnumerators
 {
-    public class MappingEnumerator : DatabaseEnumerator
+    public class MappingVirusEnumerator : DecoratingVirusEnumerator
     {
         private readonly Func<VirusData, VirusData> mappingFunction;
-        private readonly DatabaseEnumerator baseEnumerator;
+        private readonly IVirusEnumerator baseEnumerator;
 
-        public MappingEnumerator(DatabaseEnumerator enumerator, Func<VirusData, VirusData> function) {
-            this.mappingFunction = function;
-            this.baseEnumerator = enumerator;
+        public MappingVirusEnumerator(IVirusEnumerator enumerator, Func<VirusData, VirusData> function) {
+            mappingFunction = function;
+            baseEnumerator = enumerator;
         }
         public override IEnumerable GetCollection()
         {

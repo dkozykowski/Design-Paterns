@@ -5,7 +5,7 @@ using System.Text;
 
 namespace Task3.Enumerators
 {
-    public abstract class DatabaseEnumerator
+    public interface IVirusEnumerator
     {
         public abstract IEnumerable GetCollection();
     }
